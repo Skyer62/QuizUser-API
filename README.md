@@ -18,12 +18,16 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 3. Создайте и выполните миграции:
-```shsh
+```sh
 python manage.py makemigrations
 
 python manage.py migrate
 ```
-4. Запуск проекта:
+4. Загрузите тестовые данные:
+```sh
+python manage.py loaddata fixtures.json
+```
+5. Запуск проекта:
 ```sh
 python manage.py runserver
 ```
