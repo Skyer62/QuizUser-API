@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Quiz, Question, Choice, Answer
+from .models import Answer, Choice, Question, Quiz
 
 
 class QuizAdmin(admin.ModelAdmin):

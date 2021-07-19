@@ -1,14 +1,15 @@
-from rest_framework import viewsets, mixins, permissions
-from rest_framework.generics import get_object_or_404
-from api.models import Quiz, Question, Answer, Choice
-from api.serializers import (
-    QuizSerializer, QuestionSerializer, AnswerSerializer,
-    UserQuizSerializer, AnswerOneTextSerializer,
-    AnswerOneChoiceSerializer, AnswerMultipleChoiceSerializer,
-    ChoiceSerializer,
-)
-from datetime import datetime
 import uuid
+from datetime import datetime
+
+from rest_framework import mixins, permissions, viewsets
+from rest_framework.generics import get_object_or_404
+
+from api.models import Answer, Choice, Question, Quiz
+from api.serializers import (AnswerMultipleChoiceSerializer,
+                             AnswerOneChoiceSerializer,
+                             AnswerOneTextSerializer, AnswerSerializer,
+                             ChoiceSerializer, QuestionSerializer,
+                             QuizSerializer, UserQuizSerializer)
 
 UUID4 = uuid.uuid4()
 

@@ -1,13 +1,12 @@
 from django.conf.urls import url
-from django.urls import path, include
+from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from api import views
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
-from .swagger import schema_view
+from rest_framework_simplejwt.views import (TokenObtainPairView,
+                                            TokenRefreshView)
 
+from api import views
+
+from .swagger import schema_view
 
 router = DefaultRouter()
 

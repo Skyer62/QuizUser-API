@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from api.models import Quiz, Question, Answer, Choice
 
+from api.models import Answer, Choice, Question, Quiz
 
 """Опросы"""
 
