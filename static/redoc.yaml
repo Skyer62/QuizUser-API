@@ -1,0 +1,545 @@
+openapi: 3.0.2
+info:
+  title: 'QuizUser API'
+  version: ''
+  description: |
+    запросы к API начинаются с `/api/`
+
+    # Описание
+    Проект **QuizUser** разработано для прохождения пользователями опросов в том числе анонимно.
+
+servers:
+  - url: /api/
+
+tags:
+  - name: QUIZZES
+    description: Опросы
+  - name: QUETSIONS
+    description: Вопросы
+  - name: CHOICES
+    description: Варианты ответа
+  - name: ACTIVE_QUIZZES
+    description: Активные опросы
+  - name: MY_QUIZZES
+    description: Активные опросы
+
+paths:
+  /quizzes/:
+      parameters:
+        - name: name
+          in: path
+          required: true
+          description: Название опроса
+          schema:
+            type: string
+        - name: end_date
+          in: path
+          required: true
+          description: Дата окончания
+          schema:
+            type: string
+        - name: description
+          in: path
+          required: true
+          description: Описание
+          schema:
+            type: string
+      get:
+        tags:
+          - QUIZZES
+        description: |
+          Получить опрос по id.
+
+          Права доступа: **Администратор.**
+        responses:
+          200:
+            description: Опрос
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Quizzes'
+          404:
+            description: Опрос не найден
+        security:
+          - jwt_auth:
+            - write:admin
+      post:
+        tags:
+          - QUIZZES
+        description: |
+          Создание опроса.
+
+          Права доступа: **Администратор.**
+        responses:
+          200:
+            description: 'Новый опрос'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Quizzes'
+          400:
+            description: Ошибка
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ValidationError'
+          401:
+            description: Необходим JWT токен
+          404:
+            description: Опрос не найден
+        security:
+          - jwt_auth:
+            - write:admin
+      patch:
+            tags:
+              - QUIZZES
+            description: |
+              Обновить опрос по id.
+
+              Права доступа: **Администратор.**
+            responses:
+              200:
+                description: Опрос
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/Quizzes'
+              400:
+                description: Ошибка
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/ValidationError'
+              401:
+                description: Необходим JWT токен
+              403:
+                description: Нет прав доступа
+              404:
+                description: Опрос не найден
+            security:
+            - jwt_auth:
+              - write:admin
+      delete:
+            tags:
+              - QUIZZES
+            description: |
+              Удалить опрос по id
+
+              Права доступа: **Администратор.**
+            responses:
+              204:
+                description: 'Опрос удалён'
+              401:
+                description: Необходим JWT токен
+              403:
+                description: Нет прав доступа
+              404:
+                description: Опрос не найден
+            security:
+            - jwt_auth:
+              - write:admin
+  /quizzes/<quiz_id>/questions/:
+      post:
+        tags:
+          - QUETSIONS
+        description: |
+          Добавление вопроса к опросу.
+
+          Права доступа: **Администратор.**
+        responses:
+          200:
+            description: 'Новый опрос'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Questions'
+          400:
+            description: Ошибка
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ValidationError'
+          401:
+            description: Необходим JWT токен
+          404:
+            description: Опрос не найден
+        security:
+          - jwt_auth:
+            - write:admin
+  /quizzes/<quiz_id>/questions/<question_id>/:
+      parameters:
+        - name: text
+          in: path
+          required: true
+          description: Текст вопроса
+          schema:
+            type: string
+        - name: type_question
+          in: path
+          required: true
+          description: Тип вопроса(text_field, radio, check_boxes)
+          schema:
+            type: string
+        - name: quiz
+          in: path
+          required: true
+          description: Вопрос
+          schema:
+            type: string
+      get:
+        tags:
+          - QUETSIONS
+        description: |
+          Получить вопросы к опросу по id.
+
+          Права доступа: **Администратор.**
+        responses:
+          200:
+            description: Список вопросов
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Questions'
+          404:
+            description: Опрос не найден
+        security:
+          - jwt_auth:
+            - write:admin
+      patch:
+            tags:
+              - QUETSIONS
+            description: |
+              Обновить вопрос к опросу по id.
+
+              Права доступа: **Администратор.**
+            responses:
+              200:
+                description: Опрос
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/Questions'
+              400:
+                description: Ошибка
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/ValidationError'
+              401:
+                description: Необходим JWT токен
+              403:
+                description: Нет прав доступа
+              404:
+                description: Опрос не найден
+            security:
+            - jwt_auth:
+              - write:admin
+      delete:
+            tags:
+              - QUETSIONS
+            description: |
+              Удалить вопрос по id.
+
+              Права доступа: **Администратор.**
+            responses:
+              204:
+                description: 'Вопрос удалён'
+              401:
+                description: Необходим JWT токен
+              403:
+                description: Нет прав доступа
+              404:
+                description: Опрос не найден
+            security:
+            - jwt_auth:
+              - write:admin
+
+  /quizzes/<quiz_id>/questions/<question_id>/choices/:
+    parameters:
+      - name: text
+        in: path
+        required: true
+        description: Текст вопроса
+        schema:
+          type: string
+    get:
+      tags:
+        - CHOICES
+      description: |
+        Просмотр вариантов ответа к вопросу.
+        Права доступа: **Администратор.**
+      responses:
+        200:
+          description: Варианты ответа к вопросу
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Choices'
+        404:
+          description: Опрос не найден
+      security:
+        - jwt_auth:
+          - write:admin
+    post:
+      tags:
+        - CHOICES
+      description: |
+        Добавление варианта ответа к вопросу.
+        Права доступа: **Администратор.**
+      responses:
+        200:
+          description: 'Новый опрос'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Choices'
+        400:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        401:
+          description: Необходим JWT токен
+        404:
+          description: Опрос не найден
+      security:
+        - jwt_auth:
+          - write:admin
+    patch:
+          tags:
+            - CHOICES
+          description: |
+            Обновить вариант ответа по id.
+            Права доступа: **Администратор.**
+          responses:
+            200:
+              description: Опрос
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Choices'
+            400:
+              description: Ошибка
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/ValidationError'
+            401:
+              description: Необходим JWT токен
+            403:
+              description: Нет прав доступа
+            404:
+              description: Опрос не найден
+          security:
+          - jwt_auth:
+            - write:admin
+    delete:
+          tags:
+            - CHOICES
+          description: |
+            Удалить вариант ответа по id
+            Права доступа: **Администратор.**
+          responses:
+            204:
+              description: 'Опрос удалён'
+            401:
+              description: Необходим JWT токен
+            403:
+              description: Нет прав доступа
+            404:
+              description: Опрос не найден
+          security:
+          - jwt_auth:
+            - write:admin
+
+  /active_quizzes/:
+    get:
+      tags:
+        - ACTIVE_QUIZZES
+      description: |
+        Получить список активных опросов.
+        Права доступа: **Любой пользователь.**
+      responses:
+        200:
+          description: Список активных опросов
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quizzes'
+        404:
+          description: Активных опросов нет
+
+  /quizzes/<quiz_id>/questions/<question_id>/answers/:
+    parameters:
+      - name: self_text
+        in: path
+        description: Ответ текстом
+        schema:
+          type: string
+      - name: one_choice
+        in: path
+        description: Выбор варианта ответа
+        schema:
+          type: string
+      - name: many_choice
+        in: path
+        description: Выбор нескольких вариантов ответа
+        schema:
+          type: string
+    post:
+      tags:
+        - ANSWER
+      description: |
+        Оставить ответ на вопрос.
+        Права доступа: **Любой пользователь.**
+      responses:
+        200:
+          description: Опрос пройден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Answers'
+        404:
+          description: Опрос не пройден
+
+  /my_quizzes/:
+    get:
+      tags:
+        - MY_QUIZZES
+      description: |
+        Получить список пройденных опросов с детальным описанием.
+        Права доступа: **Любой пользователь.**
+      responses:
+        200:
+          description: Список пройденных опросов
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/My_Quizzes'
+        404:
+          description: Активных опросов нет
+
+components:
+  schemas:
+    Quizzes:
+      title: Опрос
+      type: object
+      description: Описание опроса
+      properties:
+        id:
+          type: integer
+          title: ID опроса
+        name:
+          type: string
+          title: Название
+        start_date:
+          type: string
+          format: date-time
+          title: Дата начала
+
+        end_date:
+          type: string
+          format: date-time
+          title: Дата окончания
+        description:
+          type: string
+          title: Описание
+
+    Questions:
+      title: Вопросы
+      type: object
+      description: Описание вопроса
+      properties:
+        id:
+          type: integer
+          title: ID вопроса
+        text:
+          type: string
+          title: Название
+        type_question:
+          type: string
+          title: Тип вопроса
+        quiz:
+          type: integer
+          title: ID Опроса
+
+    Choices:
+      title: Варианты ответа
+      type: object
+      description: Описание вариантов ответа
+      required:
+          - id
+          - name
+      properties:
+        id:
+          type: integer
+          title: ID опроса
+        name:
+          type: string
+          title: Название
+
+    Answers:
+          title: Ответы
+          type: object
+          description: Описание ответов
+          properties:
+            self_text:
+              type: string
+              title: Текст ответа
+            one_choice:
+              type: integer
+              title: Вариант ответа
+            many_choice:
+              type: list
+              title: Варианты ответа
+
+    My_Quizzes:
+      title: Пройденные опросы
+      type: object
+      description: Описание пройденных опросов
+      properties:
+        id:
+          type: integer
+          title: ID опроса
+        questions:
+          type: string
+          title: Вопросы
+        name:
+          type: string
+          title: Название
+        start_date:
+          type: string
+          format: date-time
+          title: Дата начала
+        end_date:
+          type: string
+          format: date-time
+          title: Дата окончания
+        description:
+          type: string
+          title: Описание
+
+
+    ValidationError:
+      title: Ошибка валидации
+      type: object
+      properties:
+        field_name:
+          type: array
+          items:
+            type: string
+
+    Token:
+      title: Токен
+      type: object
+      properties:
+        token:
+          type: string
+          title: access токен
+
+  securitySchemes:
+    jwt_auth:
+      type: apiKey
+      name: Bearer
+      in: header

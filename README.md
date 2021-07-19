@@ -1,1 +1,2 @@
-# quiz_user_api
+# QuizUser API
+API для системы опросов пользователей
