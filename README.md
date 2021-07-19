@@ -29,4 +29,5 @@ python manage.py runserver
 ```
 
 Полная документация (redoc.yaml) доступна по адресу http://127.0.0.1/redoc/
+
 Автоматически сгенерированная документация http://127.0.0.1/api/swagger/
